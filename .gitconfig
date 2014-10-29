@@ -1,0 +1,48 @@
+[user]
+  name = pololee
+  email = pololee1990@gmail.com
+[github]
+  user = pololee
+[core]
+  excludesfile = /Users/pololee/.gitignore_global
+	editor = vim
+[push]
+  default = upstream
+[alias]
+  co = checkout
+  st = status
+  b = branch
+  ci = commit
+  l = log --pretty=format:'%C(yellow)%H %n%C(yellow)%ad%n%Cblue[%cn]%n%s  %n' --decorate --date=short
+  new = log --oneline HEAD ^origin/master
+  lg = log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all
+  lg2 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all
+  df = difftool
+[color]
+  ui = true
+[color "branch"]
+  current = yellow black
+  local = yellow
+  remote = magenta
+[color "diff"]
+  meta = yellow bold
+  frag = magenta bold
+  old = red
+  new = green
+  whitespace = white reverse
+[color "status"]
+  added = yellow
+  changed = green
+  untracked = cyan reverse
+  branch = magenta
+[diff]
+	tool = diffmerge
+[difftool "diffmerge"]
+	cmd = /usr/bin/diffmerge 2>/dev/null \"$LOCAL\" \"$REMOTE\"
+[merge]
+	tool = diffmerge
+[mergetool "diffmerge"]
+	cmd = /usr/bin/diffmerge 2>/dev/null --merge --result=\"$MERGED\"\"$LOCAL\" \"$BASE\" \"$REMOTE\"
+	trustExitCode = true
+[difftool]
+	prompt = false
