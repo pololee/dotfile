@@ -1,3 +1,5 @@
+### Theme setup
+
 [iTerm2 theme](http://iterm2colorschemes.com/)
   - choose Monokai Soda and load it into iTerm2
 [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh)
