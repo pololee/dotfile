@@ -71,6 +71,8 @@ hotkey.bind(hyper, "D", mouseHighlight)
 
 -- Show hints
 -- hs.hints.style = "vimperator"
+hs.hints.fontSize = 30
+hs.hints.showTitleThresh = 15
 hotkey.bind(hyper, 'h', hs.hints.windowHints)
 
 -- Open applications
