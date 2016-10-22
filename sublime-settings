@@ -1,0 +1,25 @@
+{
+    "always_show_minimap_viewport": true,
+    "color_scheme": "Packages/ayu/ayu.tmTheme",
+    "draw_minimap_border": true,
+    "font_face": "monaco",
+    "font_options":
+    [
+        "gray_antialias",
+        "subpixel_antialias"
+    ],
+    "font_size": 13,
+    "ignored_packages":
+    [
+        "Vintage"
+    ],
+    "indent_guide_options":
+    [
+        "draw_normal",
+        "draw_active"
+    ],
+    "overlay_scroll_bars": "enabled",
+    "save_on_focus_lost": true,
+    "tab_size": 2,
+    "theme": "ayu.sublime-theme"
+}
