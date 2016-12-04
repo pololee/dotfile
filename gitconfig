@@ -1,24 +1,26 @@
 [user]
-	name = Polo
-	email = xiao.li@appfolio.com
+  name = Polo
+  email = pololee1990@gmail.com
 [github]
   user = pololee
 [core]
-	excludesfile = /Users/pololee/.gitignore_global
-	editor = vim
+  excludesfile = /Users/pololee/.gitignore_global
+  editor = vim
 [push]
   default = current
 [alias]
   co = checkout
   st = status
   b = branch
-  p = pull
+  p = pull -p
   ci = commit
+  l = log --pretty=format:'%C(yellow)%H %n%C(yellow)%ad%n%Cblue[%cn]%n%s  %n' --decorate --date=short
   lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
   lo = log --abbrev-commit --pretty=oneline --format='%C(yellow)%h%Creset %s %C(bold blue)<%an>%Creset %Cgreen(%cr)%Creset'
   new = log --oneline HEAD ^origin/master
   wip = commit -am 'pl - WIP'
   unwip = reset HEAD^
+  cleanlocal = !sh -c "git branch --merged master | grep -v -e 'master' -e '\*' | xargs -n 1 git branch -d && git remote prune origin"
 [color]
   ui = true
 [color "branch"]
@@ -37,8 +39,10 @@
   untracked = cyan reverse
   branch = magenta
 [filter "lfs"]
-	clean = git-lfs clean %f
-	smudge = git-lfs smudge %f
+  clean = git-lfs clean %f
+  smudge = git-lfs smudge %f
   required = true
 [init]
   templatedir = /Users/pololee/.git_template
+[rebase]
+  autosquash = true
