@@ -70,9 +70,10 @@ hotkey.bind(hyper, "D", mouseHighlight)
 
 
 -- Show hints
--- hs.hints.style = "vimperator"
-hs.hints.fontSize = 30
-hs.hints.showTitleThresh = 15
+hs.hints.style = "vimperator"
+hs.hints.fontName = 'Monaco'
+hs.hints.fontSize = 25
+hs.hints.showTitleThresh = 5
 hotkey.bind(hyper, 'h', hs.hints.windowHints)
 
 -- Open applications
@@ -84,19 +85,14 @@ hotkey.bind(hyper, 'i', openiterms2)
 local function opengooglechrome(  )
   application.launchOrFocus('Google Chrome')
 end
-hotkey.bind(hyper, 'c', opengooglechrome)
+hotkey.bind(hyper, 'o', opengooglechrome)
 
 local function openslack(  )
   application.launchOrFocus('Slack')
 end
 hotkey.bind(hyper, 's', openslack)
 
-local function openterminal(  )
-  application.launchOrFocus('Terminal')
-end
-hotkey.bind(hyper, 'n', openterminal)
-
 local function opensublime(  )
-  application.launchOrFocus('Sublime Text')
+  application.launchOrFocus('Visual Studio Code')
 end
-hotkey.bind(hyper, 'l', opensublime)
+hotkey.bind(hyper, ';', opensublime)

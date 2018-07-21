@@ -1,6 +1,5 @@
 [user]
 	name = Polo
-	email = xiao.li@appfolio.com
 [github]
   user = pololee
 [core]
@@ -42,3 +41,6 @@
   required = true
 [init]
   templatedir = /Users/pololee/.git_template
+[pager]
+  branch = false
+  diff = false
