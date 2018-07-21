@@ -5,7 +5,7 @@
 
 [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh)
   - Install: curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
-  - Change theme in .zshrc: ZSH_THEME="simple"
+  - Change theme in .zshrc: ZSH_THEME="muse"
 
 [janus](https://github.com/carlhuda/janus)
   - for vim
