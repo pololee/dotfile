@@ -1,4 +1,5 @@
-ZSH_THEME="robbyrussell"
+ZSH_THEME="agnoster"
+DEFAULT_USER="pololee" #outout of whoami https://gist.github.com/kevin-smets/8568070#custom-prompt-styles
 
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 
