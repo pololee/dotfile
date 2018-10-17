@@ -2173,6 +2173,8 @@
 	<string>1FFAD113-4428-448F-B144-11A788C3B8C1</string>
 	<key>DisableWindowSizeSnap</key>
 	<true/>
+	<key>DoubleClickPerformsSmartSelection</key>
+	<true/>
 	<key>DrawOutlineAroundCursor</key>
 	<true/>
 	<key>GlobalKeyMap</key>
@@ -2336,9 +2338,9 @@
 	<key>NSWindow Frame SUUpdateAlert</key>
 	<string>426 363 620 392 0 0 1440 877 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>357 175 796 486 0 0 1440 877 </string>
+	<string>356 414 918 452 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>32 0 1408 877 0 0 1440 877 </string>
+	<string>176 71 650 452 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>176 71 570 452 0 0 1440 878 </string>
 	<key>NeverWarnAboutShortLivedSessions_1FFAD113-4428-448F-B144-11A788C3B8C1</key>
@@ -3160,7 +3162,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2018-10-11T04:51:39Z</date>
+	<date>2018-10-17T02:13:51Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SmartPlacement</key>
@@ -3170,9 +3172,9 @@
 	<key>WindowNumber</key>
 	<true/>
 	<key>WordCharacters</key>
-	<string> </string>
+	<string></string>
 	<key>iTerm Version</key>
-	<string>3.2.3beta2</string>
+	<string>3.2.4beta3</string>
 	<key>kCPKSelectionViewPreferredModeKey</key>
 	<integer>0</integer>
 	<key>kCPKSelectionViewShowHSBTextFieldsKey</key>
