@@ -30,4 +30,4 @@
 9. Update *`.zshr`* based on this [https://github.com/pololee/dotfile/blob/master/zshrc](https://github.com/pololee/dotfile/blob/master/zshrc)
 
 The final output should look like this
-
+![Image of my terminal](https://github.com/pololee/dotfile/blob/master/iterm2-look.png?raw=true)
