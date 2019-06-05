@@ -22,9 +22,9 @@
    brew tap caskroom/fonts
    brew cask install font-hack-nerd-font
    ```
-7. Install *powerlevel9k* [https://github.com/bhilburn/powerlevel9k/wiki/Install-Instructions#option-2-install-for-oh-my-zsh](https://github.com/bhilburn/powerlevel9k/wiki/Install-Instructions#option-2-install-for-oh-my-zsh)
+7. Install *powerlevel10k* [https://github.com/romkatv/powerlevel10k#oh-my-zsh](https://github.com/romkatv/powerlevel10k#oh-my-zsh)
    ```
-   git clone https://github.com/bhilburn/powerlevel9k.git ~/.oh-my-zsh/custom/themes/powerlevel9k
+   git clone https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
    ```
 8. Link iTerm2 preference profile [https://github.com/pololee/dotfile/blob/master/iterm2_profile/com.googlecode.iterm2.plist](https://github.com/pololee/dotfile/blob/master/iterm2_profile/com.googlecode.iterm2.plist)
 9. Update *`.zshr`* based on this [https://github.com/pololee/dotfile/blob/master/zshrc](https://github.com/pololee/dotfile/blob/master/zshrc)

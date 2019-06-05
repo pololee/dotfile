@@ -2758,11 +2758,11 @@
 	<key>NSWindow Frame NSFontPanel</key>
 	<string>317 113 785 382 0 0 1440 877 </string>
 	<key>NSWindow Frame SUUpdateAlert</key>
-	<string>948 596 700 622 0 0 2560 1417 </string>
+	<string>377 191 700 622 0 0 1440 877 </string>
 	<key>NSWindow Frame SharedPreferences</key>
 	<string>356 328 918 512 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>36 0 2524 1417 0 0 2560 1417 </string>
+	<string>35 0 1405 877 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>176 71 570 452 0 0 1440 878 </string>
 	<key>NeverWarnAboutShortLivedSessions_1FFAD113-4428-448F-B144-11A788C3B8C1</key>
@@ -3639,7 +3639,7 @@
 	<key>NoSyncLastTipTime</key>
 	<real>556873890.43427706</real>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
-	<integer>28</integer>
+	<integer>41</integer>
 	<key>NoSyncNextAnnoyanceTime</key>
 	<real>575325358.83170295</real>
 	<key>NoSyncOnboardingWindowHasBeenShown</key>
@@ -3818,6 +3818,14 @@
 				<true/>
 				<key>name</key>
 				<string>tmuxStatusLeft</string>
+				<key>nonterminalContext</key>
+				<integer>0</integer>
+			</dict>
+			<dict>
+				<key>isTerminal</key>
+				<true/>
+				<key>name</key>
+				<string>tmuxWindowTitleEval</string>
 				<key>nonterminalContext</key>
 				<integer>0</integer>
 			</dict>
@@ -4312,7 +4320,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2019-04-28T22:37:31Z</date>
+	<date>2019-05-19T19:22:08Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SUUpdateRelaunchingMarker</key>
@@ -4330,7 +4338,7 @@
 	<key>WordCharacters</key>
 	<string></string>
 	<key>iTerm Version</key>
-	<string>3.3.0beta5</string>
+	<string>3.3.0beta7</string>
 	<key>kCPKSelectionViewPreferredModeKey</key>
 	<integer>0</integer>
 	<key>kCPKSelectionViewShowHSBTextFieldsKey</key>
