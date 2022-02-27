@@ -36,8 +36,8 @@
   untracked = cyan reverse
   branch = magenta
 [filter "lfs"]
-	clean = git-lfs clean %f
-	smudge = git-lfs smudge %f
+  clean = git-lfs clean %f
+  smudge = git-lfs smudge %f
   required = true
 [init]
   templatedir = /Users/pololee/.git_template
