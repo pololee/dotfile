@@ -96,3 +96,41 @@ local function opensublime(  )
   application.launchOrFocus('Visual Studio Code')
 end
 hotkey.bind(hyper, ';', opensublime)
+
+-- Scrolls natural direction for trackpads, but unnatural direction for wheel mice.
+scrollTap = hs.eventtap.new(
+  {
+    hs.eventtap.event.types.scrollWheel,
+  },
+  function(event)
+    local continuous = event:getProperty(hs.eventtap.event.properties.scrollWheelEventIsContinuous)
+
+    -- If there is continuous scroll, then it's a trackpad, so don't invert it.
+    if continuous == 1 then
+      return false
+    end
+
+    local scrollAmounts = {
+      vertical = event:getProperty(hs.eventtap.event.properties.scrollWheelEventDeltaAxis1),
+      horizontal = event:getProperty(hs.eventtap.event.properties.scrollWheelEventDeltaAxis2),
+    }
+
+    -- We only want to muck with direction for vertical scrolling.
+    local isVerticalScrollOnly = scrollAmounts.vertical ~= 0 and scrollAmounts.horizontal == 0
+
+    if not isVerticalScrollOnly then
+      return false
+    end
+
+    -- Copy the event, return it
+    invertedEvent = event:copy()
+    invertedEvent:setProperty(
+      hs.eventtap.event.properties.scrollWheelEventDeltaAxis1,
+      scrollAmounts.vertical * -1 -- other direction
+    )
+
+    return true, {invertedEvent}
+  end
+)
+
+scrollTap:start()
