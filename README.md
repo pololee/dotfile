@@ -4,15 +4,12 @@
 
 - install [kitty](https://sw.kovidgoyal.net/kitty/binary/)
 
-  - run `kitty themes` to select `Catppuccin-Mocha`
+  - run `kitten themes` to select `Catppuccin-Mocha`
   - copy [kitty.conf](https://github.com/pololee/dotfile/blob/master/kitty/kitty.conf) to `~/.config/kitty/kitty.conf`
-
-- install [starship](https://starship.rs/guide/)
-
-  - copy [starship.toml](https://github.com/pololee/dotfile/blob/master/starship/starship.toml) to `~/.config/starship.toml`
 
 - brew install a few things
 
+  - [powerline10k](https://github.com/romkatv/powerlevel10k)
   - [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/INSTALL.md)
   - [zsh-history-substring-search](https://github.com/zsh-users/zsh-history-substring-search?tab=readme-ov-file#install)
   - [fzf](https://github.com/junegunn/fzf?tab=readme-ov-file#using-homebrew)

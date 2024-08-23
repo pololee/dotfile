@@ -1,7 +1,8 @@
 #########################
 # command config
 ########################
-eval "$(starship init zsh)"
+# eval "$(starship init zsh)"
+source $(brew --prefix)/share/powerlevel10k/powerlevel10k.zsh-theme
 
 alias vim="nvim"
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
