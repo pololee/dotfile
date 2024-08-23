@@ -1,40 +1,66 @@
 # Polo's new laptop Setup
 
-## Terminal Setup
+# Terminal Setup
 
-### Terminal theme setup
-https://github.com/pololee/dotfile/blob/master/terminal-setup.md
+- install [kitty](https://sw.kovidgoyal.net/kitty/binary/)
 
-- iTerm2
-- homebrew
-- zsh
-- powerlevel9k with nerd fonts
+  - run `kitty themes` to select `Catppuccin-Mocha`
+  - copy [kitty.conf](https://github.com/pololee/dotfile/blob/master/kitty/kitty.conf) to `~/.config/kitty/kitty.conf`
 
-### Vim setup
-[janus](https://github.com/carlhuda/janus)
+- install [starship](https://starship.rs/guide/)
 
-### Git alias config
+  - copy [starship.toml](https://github.com/pololee/dotfile/blob/master/starship/starship.toml) to `~/.config/starship.toml`
+
+- brew install a few things
+
+  - [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/INSTALL.md)
+  - [zsh-history-substring-search](https://github.com/zsh-users/zsh-history-substring-search?tab=readme-ov-file#install)
+  - [fzf](https://github.com/junegunn/fzf?tab=readme-ov-file#using-homebrew)
+  - [autojump](https://github.com/wting/autojump?tab=readme-ov-file#os-x)
+  - [bat](https://github.com/sharkdp/bat?tab=readme-ov-file#on-macos-or-linux-via-homebrew)
+  - [eza](https://eza.rocks/)
+  - [neovim](https://github.com/neovim/neovim/blob/master/INSTALL.md#homebrew-on-macos-or-linux)
+
+  ```shell
+  brew install \
+    zsh-syntax-highlighting \
+    zsh-history-substring-search \
+    fzf \
+    bat \
+    eza \
+    neovim \
+    font-victor-mono \
+    font-victor-mono-nerd-font \
+    font-iosevka \
+    font-iosevka-nerd-font
+  ```
+
+- copy [zshrc](https://github.com/pololee/dotfile/blob/master/zshrc) to `~/.zshrc`
+
+# Neovim setup
+
+- copy [nvim/init.lua](https://github.com/pololee/dotfile/blob/master/nvim/init.lua) to `~/.config/nvim/init.lua`
+
+## Git alias config
+
 https://github.com/pololee/dotfile/blob/master/gitconfig
 
+# App I Love
 
-## App I Love
+## Must install
 
-### Must install
+- [Caffeine](http://lightheadsw.com/caffeine/)
+- [Raycast](https://www.raycast.com/)
+- [Hammerspoon](https://www.hammerspoon.org/)
+- [Rectangle](https://rectangleapp.com/)
 
-- [Caffeine](http://lightheadsw.com/caffeine/) (free)
-- [Spectacle](https://github.com/eczarny/spectacle) (free)
-- [Scroll Reverser](https://pilotmoon.com/scrollreverser/) (free)
-- [Dozer](https://github.com/Mortennn/Dozer) (free)
-- [Alfred](https://www.alfredapp.com/)
-- [Hammerspoon](https://www.hammerspoon.org/) (free)
+## Other apps
 
-### Other apps
-
-- [Typora](https://typora.io/) (free)  
+- [Spectacle](https://github.com/eczarny/spectacle)
+- [Scroll Reverser](https://pilotmoon.com/scrollreverser/)
+- [Dozer](https://github.com/Mortennn/Dozer)
+- [Typora](https://typora.io/)
   Theme can be found here  
   https://theme.typora.io/  
   https://gitlab.com/pololee/typora-theme
-- [Kap](https://getkap.co/) (free) Record your screen
-- [git-fork](https://git-fork.com/) (free)  Nice git GUI
-- [Xnip](https://xnipapp.com/) (available on Mac App Store)
 - [Irvue for macOS](https://irvue.tumblr.com/) (available on Mac App Store)
