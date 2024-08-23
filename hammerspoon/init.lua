@@ -77,10 +77,10 @@ hs.hints.showTitleThresh = 5
 hotkey.bind(hyper, 'h', hs.hints.windowHints)
 
 -- Open applications
-local function openiterms2()
-  application.launchOrFocus('iTerm')
-end
-hotkey.bind(hyper, 'i', openiterms2)
+-- local function openiterms2()
+--   application.launchOrFocus('iTerm')
+-- end
+-- hotkey.bind(hyper, 'i', openiterms2)
 
 local function opengooglechrome(  )
   application.launchOrFocus('Google Chrome')
@@ -92,10 +92,15 @@ local function openslack(  )
 end
 hotkey.bind(hyper, 's', openslack)
 
-local function opensublime(  )
+local function openvscode(  )
   application.launchOrFocus('Visual Studio Code')
 end
-hotkey.bind(hyper, ';', opensublime)
+hotkey.bind(hyper, ';', openvscode)
+
+local function openkitty(  )
+  application.launchOrFocus('kitty')
+end
+hotkey.bind(hyper, 'i', openkitty)
 
 -- Scrolls natural direction for trackpads, but unnatural direction for wheel mice.
 scrollTap = hs.eventtap.new(
