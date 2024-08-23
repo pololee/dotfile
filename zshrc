@@ -1,47 +1,21 @@
-#ZSH_THEME="agnoster"
-# powerline theme
-ZSH_THEME="powerlevel9k/powerlevel9k"
-POWERLEVEL9K_MODE='nerdfont-complete'
-POWERLEVEL9K_PROMPT_ON_NEWLINE=true
-POWERLEVEL9K_DISABLE_RPROMPT=true
-DEFAULT_USER="pololee" #outout of whoami https://gist.github.com/kevin-smets/8568070#custom-prompt-styles
+#########################
+# command config
+########################
+eval "$(starship init zsh)"
 
-DISABLE_UNTRACKED_FILES_DIRTY="true"
-plugins=(git z)
+alias vim="nvim"
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source $(brew --prefix)/share/zsh-history-substring-search/zsh-history-substring-search.zsh
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
 
-# Rails Alias
-alias create='bundle exec rake db:create'
-alias migrate='bundle exec rake db:migrate; RAILS_ENV=test rake db:migrate'
-alias rollback='bundle exec rake db:rollback; RAILS_ENV=test rake db:rollback'
-alias bi='bundle install'
-alias rake='noglob bundle exec rake'
-alias trake='RAILS_ENV=test bundle exec rake'
-alias rails='bundle exec rails'
-alias trails='RAILS_ENV=test bundle exec rails'
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
+export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:wrap"
+[ -f /opt/homebrew/etc/profile.d/autojump.sh ] && . /opt/homebrew/etc/profile.d/autojump.sh
 
-
-# Run rails test
-rtestfunc() {
-  if [ $# -eq 1 ]
-  then
-    echo -e "\n\e[92mRunning test file\e[39m"
-    bundle exec ruby -I test $1
-  else
-    echo -e "\n\e[92Running individual test\e[39m"
-    bundle exec ruby -I test $1 -n $2
-  fi
-}
-alias rtest=rtestfunc
-
-export TERM=xterm-256color
-
-# Clear merged local branches
-cleanLocalMergedBranches() {
-  echo "Before cleanup:"
-  git branch;
-  echo "Cleaning up:";
-  git branch --merged master | grep -v -e 'master' -e '\*' | xargs -n 1 git branch -d && git remote prune origin
-  echo "After cleanup:"
-  git branch;
-}
-alias cleanlocal=cleanLocalMergedBranches
+export BAT_STYLE="plain"
+# eza
+alias ls="eza -1F"
+alias ll="eza -alF"
+# eza end
