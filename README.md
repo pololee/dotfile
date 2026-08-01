@@ -1,63 +1,55 @@
-# Polo's new laptop Setup
+# Polo's macOS setup
 
-# Terminal Setup
+This repository tracks the configuration used on my Mac and provides a repeatable bootstrap path for a new machine.
 
-- install [kitty](https://sw.kovidgoyal.net/kitty/binary/)
+## Current setup
 
-  - run `kitten themes` to select `Catppuccin-Mocha`
-  - copy [kitty.conf](https://github.com/pololee/dotfile/blob/master/kitty/kitty.conf) to `~/.config/kitty/kitty.conf`
+- **Shell:** Zsh with Starship, fzf, eza, zoxide, and fnm
+- **Terminal:** Ghostty with VictorMono Nerd Font and Catppuccin Mocha
+- **Editor:** Neovim with LazyVim and Catppuccin Mocha
+- **Automation:** Hammerspoon
+- **Launcher and window management:** Raycast
+- **Remote shell:** a portable Bash drop-in for SSH hosts
 
-- brew install a few things
+Kitty, iTerm2, Rectangle, and the old Sublime Text configuration are retired and are not part of the current setup.
 
-  - [powerline10k](https://github.com/romkatv/powerlevel10k)
-  - [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/INSTALL.md)
-  - [zsh-history-substring-search](https://github.com/zsh-users/zsh-history-substring-search?tab=readme-ov-file#install)
-  - [fzf](https://github.com/junegunn/fzf?tab=readme-ov-file#using-homebrew)
-  - [autojump](https://github.com/wting/autojump?tab=readme-ov-file#os-x)
-  - [bat](https://github.com/sharkdp/bat?tab=readme-ov-file#on-macos-or-linux-via-homebrew)
-  - [eza](https://eza.rocks/)
-  - [neovim](https://github.com/neovim/neovim/blob/master/INSTALL.md#homebrew-on-macos-or-linux)
+## Repository layout
 
-  ```shell
-  brew install \
-    zsh-syntax-highlighting \
-    zsh-history-substring-search \
-    fzf \
-    bat \
-    eza \
-    neovim \
-    font-victor-mono \
-    font-victor-mono-nerd-font \
-    font-iosevka \
-    font-iosevka-nerd-font
-  ```
+```text
+.
+├── Brewfile            # Curated Homebrew packages, apps, and fonts
+├── packages/           # GNU Stow packages laid out relative to $HOME
+│   ├── ghostty/
+│   ├── git/
+│   ├── hammerspoon/
+│   ├── nvim/
+│   ├── shell/
+│   └── starship/
+├── remote/bashrc       # Standalone remote SSH Bash configuration
+├── docs/               # Setup and app-specific notes
+└── scripts/            # Installation and validation commands
+```
 
-- copy [zshrc](https://github.com/pololee/dotfile/blob/master/zshrc) to `~/.zshrc`
+## Install
 
-# Neovim setup
+After installing Homebrew and cloning the repository:
 
-- copy [nvim/init.lua](https://github.com/pololee/dotfile/blob/master/nvim/init.lua) to `~/.config/nvim/init.lua`
+```sh
+./scripts/install
+```
 
-## Git alias config
+The script installs the curated Brew bundle and links the packages with GNU Stow. It does not overwrite conflicting files. See [the macOS setup guide](docs/mac-setup.md) for the remaining permissions and application setup.
 
-https://github.com/pololee/dotfile/blob/master/gitconfig
+For an SSH host, copy only the portable Bash configuration:
 
-# App I Love
+```sh
+scp remote/bashrc host:~/.bashrc
+```
 
-## Must install
+## Validate
 
-- [Caffeine](http://lightheadsw.com/caffeine/)
-- [Raycast](https://www.raycast.com/)
-- [Hammerspoon](https://www.hammerspoon.org/)
-- [Rectangle](https://rectangleapp.com/)
+```sh
+./scripts/check
+```
 
-## Other apps
-
-- [Spectacle](https://github.com/eczarny/spectacle)
-- [Scroll Reverser](https://pilotmoon.com/scrollreverser/)
-- [Dozer](https://github.com/Mortennn/Dozer)
-- [Typora](https://typora.io/)
-  Theme can be found here  
-  https://theme.typora.io/  
-  https://gitlab.com/pololee/typora-theme
-- [Irvue for macOS](https://irvue.tumblr.com/) (available on Mac App Store)
+Raycast's local config directory currently contains authentication data, so it is deliberately not mirrored here. See [the Raycast notes](docs/raycast.md).

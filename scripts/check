@@ -1,0 +1,43 @@
+#!/bin/sh
+set -eu
+
+repo_dir=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+
+zsh -n "$repo_dir/packages/shell/.zprofile"
+zsh -n "$repo_dir/packages/shell/.zshrc"
+bash -n "$repo_dir/remote/bashrc"
+
+jq empty \
+  "$repo_dir/packages/nvim/.config/nvim/.neoconf.json" \
+  "$repo_dir/packages/nvim/.config/nvim/lazy-lock.json" \
+  "$repo_dir/packages/nvim/.config/nvim/lazyvim.json"
+
+if command -v stylua >/dev/null 2>&1; then
+  stylua --check "$repo_dir/packages/nvim/.config/nvim" "$repo_dir/packages/hammerspoon/.hammerspoon"
+fi
+
+if command -v nvim >/dev/null 2>&1; then
+  find "$repo_dir/packages/hammerspoon/.hammerspoon" -name '*.lua' -type f -print | while IFS= read -r lua_file; do
+    nvim --clean -i NONE --headless "+lua assert(loadfile([[$lua_file]]))" +qa
+  done
+
+  nvim_check_dir="${TMPDIR:-/tmp}/dotfile-check-${UID:-user}"
+  mkdir -p "$nvim_check_dir/cache" "$nvim_check_dir/state"
+  XDG_CONFIG_HOME="$repo_dir/packages/nvim/.config" \
+    XDG_CACHE_HOME="$nvim_check_dir/cache" \
+    XDG_STATE_HOME="$nvim_check_dir/state" \
+    nvim -i NONE --headless \
+    '+Lazy! load catppuccin' \
+    '+colorscheme catppuccin' \
+    '+lua if not tostring(vim.g.colors_name):match("^catppuccin") then vim.cmd("cquit 1") end' \
+    +qa
+fi
+
+if rg -n -i '(access[_-]?token|api[_-]?key|client[_-]?secret|password)[[:space:]]*[:=]' \
+  --glob '!.git/**' --glob '!*.log' "$repo_dir"; then
+  echo "Possible credential found in tracked configuration." >&2
+  exit 1
+fi
+
+git -C "$repo_dir" diff HEAD --check
+echo "Configuration checks passed."

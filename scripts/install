@@ -1,0 +1,17 @@
+#!/bin/sh
+set -eu
+
+repo_dir=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+
+if ! command -v brew >/dev/null 2>&1; then
+  echo "Homebrew is required. Install it from https://brew.sh/ first." >&2
+  exit 1
+fi
+
+brew bundle --file "$repo_dir/Brewfile"
+
+for package in shell ghostty starship nvim hammerspoon git; do
+  stow --dir "$repo_dir/packages" --target "$HOME" --restow "$package"
+done
+
+echo "Dotfiles linked. Restart the shell and open Hammerspoon to finish setup."
