@@ -1,0 +1,11 @@
+theme = Catppuccin Mocha
+font-family = VictorMono Nerd Font Mono
+font-style = Semibold
+font-size = 18
+background-opacity = 0.92
+minimum-contrast = 1.1
+
+keybind = alt+left=unbind
+keybind = alt+right=unbind
+
+copy-on-select = true

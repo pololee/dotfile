@@ -1,0 +1,44 @@
+[user]
+  name = Polo
+[github]
+  user = pololee
+[core]
+  excludesfile = ~/.gitignore_global
+  editor = nvim
+[push]
+  default = current
+[alias]
+  co = checkout
+  st = status
+  b = branch
+  p = pull
+  ci = commit
+  lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+  lo = log --abbrev-commit --pretty=oneline --format='%C(yellow)%h%Creset %s %C(bold blue)<%an>%Creset %Cgreen(%cr)%Creset'
+  new = log --oneline HEAD ^origin/master
+  wip = commit -am 'pl - WIP'
+  unwip = reset HEAD^
+[color]
+  ui = true
+[color "branch"]
+  current = yellow black
+  local = yellow
+  remote = magenta
+[color "diff"]
+  meta = yellow bold
+  frag = magenta bold
+  old = red
+  new = green
+  whitespace = white reverse
+[color "status"]
+  added = yellow
+  changed = green
+  untracked = cyan reverse
+  branch = magenta
+[filter "lfs"]
+  clean = git-lfs clean %f
+  smudge = git-lfs smudge %f
+  required = true
+[pager]
+  branch = false
+  diff = false

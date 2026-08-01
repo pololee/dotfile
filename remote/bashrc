@@ -1,0 +1,37 @@
+# Portable interactive Bash setup for remote SSH hosts.
+case $- in
+  *i*) ;;
+  *) return ;;
+esac
+
+HISTCONTROL=ignoreboth:erasedups
+HISTSIZE=10000
+HISTFILESIZE=20000
+shopt -s histappend checkwinsize
+
+if command -v nvim >/dev/null 2>&1; then
+  export EDITOR=nvim
+  alias vim=nvim
+else
+  export EDITOR=vim
+fi
+export VISUAL="$EDITOR"
+export BAT_STYLE=plain
+
+if command -v eza >/dev/null 2>&1; then
+  alias ls='eza --color=auto --group-directories-first --classify=auto'
+  alias ll='eza --color=auto --group-directories-first -al --classify=auto'
+else
+  case "$(uname -s 2>/dev/null)" in
+    Darwin) alias ls='ls -G'; alias ll='ls -alG' ;;
+    *) alias ls='ls --color=auto'; alias ll='ls -al --color=auto' ;;
+  esac
+fi
+
+[ -f "$HOME/.fzf.bash" ] && . "$HOME/.fzf.bash"
+
+if command -v starship >/dev/null 2>&1; then
+  eval "$(starship init bash)"
+else
+  PS1='\[\e[1;92m\][\u@\h: \W]\$\[\e[0m\] '
+fi
