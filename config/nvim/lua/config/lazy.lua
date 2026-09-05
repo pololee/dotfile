@@ -30,7 +30,10 @@ require("lazy").setup({
     version = false, -- always use the latest git commit
     -- version = "*", -- try installing the latest stable version for plugins that support semver
   },
-  install = { colorscheme = { "tokyonight", "habamax" } },
+  -- Colorscheme for the install screen on a fresh machine. Points at the one
+  -- lua/plugins/catppuccin.lua actually selects, so a first launch doesn't flash
+  -- tokyonight before switching.
+  install = { colorscheme = { "catppuccin", "habamax" } },
   checker = {
     enabled = true, -- check for plugin updates periodically
     notify = false, -- notify on update

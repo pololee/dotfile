@@ -87,4 +87,9 @@ done
 
 echo
 echo "Done. Open a new shell (or run: exec zsh)."
-echo "Next: brew bundle --file=$DOTFILES/Brewfile"
+echo
+echo "Next, in order:"
+echo "  brew bundle --file=$DOTFILES/Brewfile"
+# Not run automatically: it needs nvim on PATH, and doing it here would mean a
+# first `nvim` launch races the script and rewrites the pins. See the script.
+echo "  $DOTFILES/scripts/bootstrap-nvim.sh   # BEFORE opening nvim"
