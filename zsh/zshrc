@@ -1,0 +1,31 @@
+#!/usr/bin/env zsh
+# ~/.zshrc — symlinked from ~/mycode/dotfiles/zsh/zshrc
+#
+# Load order matters and is the whole point of this file:
+#
+#   1. ~/.zshrc.pre.local   machine-local, runs FIRST. On a work laptop this is
+#                           where a centrally-managed shellinit belongs, so that
+#                           step 2 can override its defaults (history sizes etc.).
+#   2. conf.d/[0-8]*.zsh    the portable config, in numeric order.
+#   3. ~/.zshrc.local       machine-local, runs after the portable config: work
+#                           aliases, employer-specific env, private functions.
+#   4. conf.d/99-*.zsh      zle plugins that MUST be sourced last (see the file).
+#
+# Both .local files are untracked by design — nothing employer- or
+# machine-specific ever lands in this repo. See docs/machine-local.md.
+
+DOTFILES=${DOTFILES:-$HOME/mycode/dotfiles}
+
+[[ -r $HOME/.zshrc.pre.local ]] && source $HOME/.zshrc.pre.local
+
+for _zsh_conf in $DOTFILES/zsh/conf.d/[0-8]*.zsh(N); do
+  source $_zsh_conf
+done
+unset _zsh_conf
+
+[[ -r $HOME/.zshrc.local ]] && source $HOME/.zshrc.local
+
+for _zsh_conf in $DOTFILES/zsh/conf.d/9*.zsh(N); do
+  source $_zsh_conf
+done
+unset _zsh_conf

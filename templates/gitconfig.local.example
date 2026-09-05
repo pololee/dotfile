@@ -1,0 +1,25 @@
+# ~/.gitconfig.local — machine-local, NOT tracked in the dotfiles repo.
+#
+# Included at the BOTTOM of ~/.gitconfig, so anything set here overrides the
+# tracked config. Indent with one tab to match `git config --global`.
+#
+# Put here: the identity to commit as, signing keys, enterprise credential
+# helpers, employer-mandated hooksPath, and the repo list for `git maintenance`.
+
+[user]
+	email = you@example.com
+#	signingkey = 0000000000000000
+
+# [core]
+	# An employer-managed hooks directory. Setting this globally disables
+	# per-repo .git/hooks, so keep it machine-local.
+#	hooksPath = /etc/example/git_hooks
+
+# Background maintenance for large repos — paths differ per machine.
+# [maintenance]
+#	repo = ~/work/some-large-repo
+#	auto = true
+#	strategy = incremental
+
+# [credential "https://github.example.com"]
+#	username = your-enterprise-username

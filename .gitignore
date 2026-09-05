@@ -1,0 +1,14 @@
+.DS_Store
+
+# Backups left behind by install.sh, or by editing configs in place.
+*.bak
+*.bak-*
+*.orig
+
+# Logs some tools drop next to their config (herdr, for one).
+*.log
+
+# Anything machine-local belongs in ~/.zshrc.local / ~/.gitconfig.local, never
+# in the repo. Ignored here as a second line of defence against an errant `git add`.
+*.local
+!templates/*.local.example

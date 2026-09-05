@@ -1,0 +1,29 @@
+[keys]
+prefix = "ctrl+a"
+
+[terminal]
+default_shell = "zsh"
+
+[ui]
+mouse_capture = true
+
+# Toasts default to "off", and toggling them in the Settings UI (prefix+s) is only
+# runtime state — it dies with the server, which is why it had to be re-enabled on
+# every new connection. Setting it here is what makes it stick.
+#
+# "terminal" is the one delivery the docs say works over SSH: the server emits an
+# escape sequence that reaches iTerm2 on the laptop. "system" would call the OS
+# notification service on whichever machine the server runs on, so over a remote
+# attach it would fire on the devbox and be lost.
+[ui.toast]
+delivery = "terminal"
+# Only notify if the pane is STILL in that state after this many seconds, so quick
+# self-resolving blips stay quiet. 0 is instant.
+delay_seconds = 1
+
+# Already the default, but set explicitly so first-run onboarding can't write
+# `false` here on a fresh machine. Sounds play through the LOCAL client, so this
+# laptop-side file is the one that matters when attached to a devbox.
+# Note: HERDR_DISABLE_SOUND in the environment overrides this even when true.
+[ui.sound]
+enabled = true

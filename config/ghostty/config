@@ -1,0 +1,86 @@
+# Ghostty config.
+#
+# To check this file, or to list every option with its default, use the CLI inside
+# the app bundle: /Applications/Ghostty.app/Contents/MacOS/ghostty
+#
+# Its subcommand names are deliberately not written out anywhere in this file. The
+# GUI config loader reported "invalid field" for one of them appearing inside a
+# comment, even though the CLI validator accepted the very same file.
+
+# ---------------------------------------------------------------------------
+# Appearance
+# ---------------------------------------------------------------------------
+
+theme = Catppuccin Mocha
+
+# The 22 explicit palette/background/foreground/cursor/selection lines that used
+# to sit here were byte-identical to the shipped theme
+# (/Applications/Ghostty.app/Contents/Resources/ghostty/themes/Catppuccin Mocha),
+# so they changed nothing visually and would have silently fought any future
+# `theme =` swap. Removed rather than kept in sync by hand.
+
+font-family = "VictorMono Nerd Font"
+font-size = 16
+font-thicken = true
+
+# 1 = fully opaque (Ghostty's default), 0 = fully transparent.
+# 0.9 read as too transparent; 1 removed the effect entirely. 0.97 for less.
+#
+# Two macOS caveats worth knowing:
+#   - Changing this needs a full restart of Ghostty. Reloading the config
+#     (cmd+shift+,) will NOT apply it.
+#   - Opacity is disabled entirely in native fullscreen, because the background
+#     goes gray and widgets can show through.
+background-opacity = 0.95
+
+# Draw tabs into the title bar instead of below it — reclaims one row of height.
+macos-titlebar-style = tabs
+
+# Suppresses the "80x24" overlay on every resize. Useful exactly once.
+resize-overlay = never
+
+# ---------------------------------------------------------------------------
+# Input
+# ---------------------------------------------------------------------------
+
+# herdr binds prefix+alt+g (lazygit popup) and prefix+alt+l (rebuild layout), and
+# herdr's own docs caution that "alt+... may depend on your terminal/tmux setup".
+# On a U.S. layout Ghostty already defaults this to true, so this is a pin rather
+# than a fix: switching keyboard layouts would otherwise break those chords
+# quietly, because Option would start producing composed Unicode instead of Alt.
+macos-option-as-alt = true
+
+# Newline instead of submit in Claude Code / Codex.
+keybind = shift+enter=text:\x1b\r
+
+# Get the pointer out of the way of text while typing.
+mouse-hide-while-typing = true
+
+copy-on-select = clipboard
+
+# ---------------------------------------------------------------------------
+# Shell integration
+# ---------------------------------------------------------------------------
+
+# Ghostty's defaults, stated explicitly so it's obvious what's on.
+#
+# `title` is kept deliberately. It looks like it should fight the OSC 2 title that
+# ~/.zsh/herdr-remote.zsh sets to `herdr:<box>`, but it doesn't: shell integration
+# writes the title only from precmd/preexec, and the wrapper writes its OSC 2
+# after preexec has already run, with nothing refreshing it while herdr holds the
+# foreground. So the wrapper wins for the whole session, and outside herdr you get
+# useful per-tab titles that ~/.zshrc doesn't set on its own.
+# If a title ever does get clobbered, `no-title` is the escape hatch.
+#
+# ssh-env / ssh-terminfo stay off: they exist to repair TERM on remote hosts, and
+# the devboxes already ship an xterm-ghostty terminfo entry (verified with
+# `infocmp xterm-ghostty` over SSH). Turn ssh-terminfo on if you start SSHing to
+# hosts that lack it.
+shell-integration-features = cursor,title,no-sudo,no-ssh-env,no-ssh-terminfo,path
+
+# ---------------------------------------------------------------------------
+# Windows
+# ---------------------------------------------------------------------------
+
+# Restore window size/position/layout across restarts.
+window-save-state = always

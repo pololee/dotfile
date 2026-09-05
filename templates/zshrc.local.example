@@ -1,0 +1,22 @@
+#!/usr/bin/env zsh
+# ~/.zshrc.local — machine-local, NOT tracked in the dotfiles repo.
+#
+# Sourced by ~/.zshrc after the portable config in zsh/conf.d/[0-8]*.zsh and
+# before the zle plugins in 99-plugins-last.zsh. Put anything here that is tied
+# to one employer, one host, or one set of credentials.
+#
+# There is a companion file, ~/.zshrc.pre.local, sourced FIRST — before the
+# portable config. Use that one only for centrally-managed shellinit that the
+# portable config is meant to override (history sizes, PATH bootstrapping).
+
+# --- work paths and shortcuts ------------------------------------------------
+# alias work="cd $HOME/work/monorepo"
+
+# --- employer-specific env ---------------------------------------------------
+# export SOME_INTERNAL_TOOL_FLAG=1
+
+# --- private helper functions ------------------------------------------------
+# Functions that shell out to internal CLIs or hostnames belong here, not in the
+# repo. Longer ones are easier to keep in ~/.zsh/*.zsh and source from here:
+#
+#   for f in $HOME/.zsh/*.zsh(N); do source $f; done

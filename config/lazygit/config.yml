@@ -1,0 +1,15 @@
+# ~/.config/lazygit/config.yml
+git:
+  # autoRefresh: false
+  # staging:
+  #   refreshStagedChanges: false
+  paging:
+    colorArg: always
+    pager: delta --paging=never
+  autoForwardBranches: none
+gui:
+  showFileTree: false
+  sidePanelWidth: 0
+refresher:
+  refreshInterval: 60
+

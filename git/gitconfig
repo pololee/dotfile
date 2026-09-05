@@ -1,0 +1,118 @@
+# ~/.gitconfig — symlinked from ~/mycode/dotfiles/git/gitconfig
+#
+# Indent with one tab when editing by hand: that matches how
+# `git config --global` writes the file, so hand edits don't show up as noise.
+#
+# Machine- and employer-specific settings (signing key, maintenance repo list,
+# enterprise credential usernames, custom hooksPath) go in ~/.gitconfig.local,
+# which is included at the BOTTOM of this file so it wins on any key it sets.
+# See docs/machine-local.md.
+
+[user]
+	name = Polo Li
+	# email intentionally not set here — set it in ~/.gitconfig.local so a work
+	# laptop and a personal laptop can't cross-author commits.
+
+[core]
+	editor = nvim
+	pager = delta --line-numbers --dark
+	# Filesystem monitor daemon + untracked cache: the two biggest wins for
+	# `git status` on large repos.
+	fsmonitor = true
+	untrackedCache = true
+	preloadindex = true
+	deltabasecachelimit = 4g
+
+[init]
+	defaultBranch = main
+
+[fetch]
+	prune = true
+
+[push]
+	default = simple
+	autoSetupRemote = true
+
+[pull]
+	ff = only
+
+[rebase]
+	autoSquash = true
+	autoStash = true
+
+[merge]
+	conflictstyle = zdiff3
+
+[diff]
+	colorMoved = default
+	algorithm = histogram
+
+[help]
+	# Wait 0.5s, then run the corrected command for typos like `git stauts`.
+	autocorrect = 50
+
+[feature]
+	manyfiles = true
+
+# --- performance knobs; mostly defaults, set explicitly to be legible ---------
+[checkout]
+	# -1 = one worker per logical core.
+	workers = -1
+[index]
+	threads = true
+	recordEndOfIndexEntries = true
+	recordOffsetTable = true
+	skipHash = false
+
+[alias]
+	co = checkout
+	st = status
+	b = branch
+	p = pull --ff-only
+	ci = commit
+	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	lo = log --abbrev-commit --pretty=oneline --format='%C(yellow)%h%Creset %s %C(bold blue)<%an>%Creset %Cgreen(%cr)%Creset'
+	# Commits on this branch that aren't upstream yet.
+	new = log --oneline HEAD ^origin/master
+	wip = commit -am 'WIP'
+	unwip = reset HEAD^
+	# Delete local branches whose upstream has been deleted.
+	gone = ! "git fetch -p && git for-each-ref --format '%(refname:short) %(upstream:track)' | awk '$2 == \"[gone]\" {print $1}' | xargs -n 1 git branch -D"
+	update-rebase = !sh -c 'git fetch origin master:master && git rebase master'
+
+[delta]
+	navigate = true   # n / N to move between diff sections
+	side-by-side = true
+	line-numbers = true
+
+[interactive]
+	diffFilter = delta --color-only
+
+[color]
+	ui = true
+[color "branch"]
+	current = yellow black
+	local = yellow
+	remote = magenta
+[color "status"]
+	added = yellow
+	changed = green
+	untracked = cyan reverse
+	branch = magenta
+
+[pager]
+	branch = false
+
+[credential]
+	helper = osxkeychain
+
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+
+# Must stay last: later includes win, so ~/.gitconfig.local can override
+# anything above it.
+[include]
+	path = ~/.gitconfig.local
