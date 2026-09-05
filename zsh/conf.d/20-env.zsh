@@ -12,13 +12,7 @@ export HOMEBREW_PREFIX="${HOMEBREW_PREFIX:-/opt/homebrew}"
 # `bat` as a pager elsewhere (git-delta, --help wrappers) reads better plain.
 export BAT_STYLE="plain"
 
-# Claude Code model aliases: point /model's Opus and Sonnet entries at the
-# 1M-context variants.
-export ANTHROPIC_DEFAULT_OPUS_MODEL="claude-opus-5[1m]"
-export ANTHROPIC_DEFAULT_SONNET_MODEL="claude-sonnet-5[1m]"
-
 # Optional PATH entries — each guarded so a machine that lacks the tool doesn't
 # end up with a dead PATH component.
 [[ -d $HOME/.local/bin ]] && path=($HOME/.local/bin $path)
-[[ -d $HOME/conductor/.venv/bin ]] && path=($HOME/conductor/.venv/bin $path)
 export PATH

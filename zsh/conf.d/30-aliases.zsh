@@ -3,11 +3,6 @@
 
 alias vim="nvim"
 
-# Navigation
-alias ..="cd .."
-alias ...="cd ../.."
-alias ....="cd ../../.."
-
 # Modern replacements
 alias ls="eza --icons=auto --color=auto --group-directories-first --classify=auto"
 alias ll="eza --icons=auto --color=auto --group-directories-first -al --classify=auto"

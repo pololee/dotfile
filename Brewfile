@@ -35,7 +35,6 @@ brew "shfmt"              # faster and works offline
 
 # --- terminal multiplexing --------------------------------------------------
 brew "herdr"              # config/herdr — https://herdr.dev
-brew "zellij"             # config/zellij
 brew "tmux"
 
 # --- misc -------------------------------------------------------------------
