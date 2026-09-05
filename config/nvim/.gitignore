@@ -1,3 +1,11 @@
+# Untracked on purpose. lazy.nvim rewrites this on every install and update, and
+# ~/.config/nvim is a symlink into the repo — so tracking it means either a
+# perpetually dirty repo or a bootstrap dance to stop a first launch on a new
+# machine from clobbering the pins. This config is stock LazyVim plus two small
+# override files, so installing current plugins is the cheaper trade. See README.
+lazy-lock.json
+
+# Below: LazyVim starter defaults.
 tt.*
 .tests
 doc/tags

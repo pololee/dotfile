@@ -12,16 +12,12 @@ macOS / zsh / Homebrew. Catppuccin Mocha throughout.
 ```sh
 git clone <this-repo> ~/mycode/dotfiles
 cd ~/mycode/dotfiles
-brew bundle                    # tools the configs depend on
-./install.sh --dry-run         # review
-./install.sh                   # symlink into $HOME
-./scripts/bootstrap-nvim.sh    # plugins at the pinned commits — run BEFORE opening nvim
+brew bundle              # tools the configs depend on
+./install.sh --dry-run   # review
+./install.sh             # symlink into $HOME
 exec zsh
+nvim                     # first launch installs plugins; give it a minute
 ```
-
-Run `bootstrap-nvim.sh` before the first `nvim` launch. Launching nvim first
-installs plugins at upstream HEAD and rewrites `lazy-lock.json` in this repo —
-see [Neovim](#neovim) for why.
 
 `install.sh` is idempotent and moves anything it doesn't own to
 `<dest>.bak-<timestamp>` rather than deleting it. Re-run it after a `git pull`
@@ -62,9 +58,11 @@ install.sh                 idempotent symlinker with backups
 `zsh/zshrc` deliberately contains no settings — only the load order. Add
 settings to a numbered file in `conf.d/`, or a new one; the glob picks it up.
 
-Directory-level symlinks are used where the app only reads (`hammerspoon`) or
-where files it writes are worth tracking (`nvim`'s `lazy-lock.json`). File-level
-symlinks are used where an app drops logs beside its config (`herdr`).
+Directory-level symlinks are used where the config is a whole tree the app owns
+(`nvim`, `hammerspoon`) — a per-file list would need editing every time a plugin
+spec or module is added. File-level symlinks are used where an app writes logs or
+state beside its config, so that noise stays out of the repo (`herdr`). What nvim
+writes into its own config dir is gitignored; see [Neovim](#neovim).
 
 herdr is the terminal multiplexer; zellij was dropped once herdr replaced it.
 `tmux` stays in the Brewfile because herdr's remote wrapper drives it, but there
@@ -88,57 +86,45 @@ leaving trackpad gestures alone.
 ## Neovim
 
 Stock [LazyVim](https://lazyvim.github.io) plus two overrides: Catppuccin Mocha
-with a transparent background, and neo-tree showing dotfiles. No LazyVim extras
-are enabled (`lazyvim.json` has an empty `extras` list), so the plugin set is
-33 plugins, all of them LazyVim defaults or their dependencies. Nothing to
-remember — `lazy-lock.json` is the inventory.
+with a transparent background, and neo-tree showing dotfiles. `lua/config/`
+holds the starter's empty `options` / `keymaps` / `autocmds` stubs, and no
+LazyVim extras are enabled (`lazyvim.json` has an empty `extras` list). That
+comes to 33 plugins, every one a LazyVim default or a dependency of one.
 
-Requires nvim >= 0.11.2 (the floor the pinned LazyVim enforces) and a C compiler
-for treesitter parsers — `xcode-select --install` on a fresh Mac.
+Requires nvim >= 0.11.2 (LazyVim's floor) and a C compiler for treesitter
+parsers — `xcode-select --install` on a fresh Mac. First launch installs
+everything; give it a minute.
 
-### Why bootstrap-nvim.sh exists
+### Plugins are not pinned, deliberately
 
-`lazy-lock.json` is tracked, which is what makes two laptops agree. But the
-config sets `version = false`, so on a machine where a plugin isn't cloned yet
-lazy.nvim installs it at **branch HEAD** and then writes those commits back to
-the lockfile. Since `~/.config/nvim` is a symlink into this repo, a first `nvim`
-launch on a new machine silently rewrites your pins. Measured in a clean XDG
-sandbox: 19 of 33 pins moved.
+`lazy-lock.json` is gitignored. Tracking it looks like the obvious way to make
+two laptops agree, and it does — but it costs more than it's worth here:
 
-`Lazy! restore` does honour the lockfile — but only for plugins already on disk,
-and it re-persists the file as it goes. So the working order is install → put the
-lockfile back → restore, which is what `scripts/bootstrap-nvim.sh` does. It then
-verifies by comparing every plugin's git HEAD to its pin, rather than trusting
-that the lockfile looks clean.
+- The config sets `version = false`, so on a machine where a plugin isn't cloned
+  yet lazy.nvim installs it at **branch HEAD** and writes those commits back to
+  the lockfile. `~/.config/nvim` is a symlink into this repo, so a first `nvim`
+  launch on a new machine silently rewrites the pins — measured in a clean XDG
+  sandbox, 19 of 33 moved.
+- `Lazy! restore` honours the lockfile, but only for plugins already on disk, and
+  re-persists the file as it goes. Getting a fresh machine onto the pins needs an
+  install → put-the-lockfile-back → restore loop, i.e. a bootstrap script that
+  has to run *before* you ever open nvim.
+- With nothing in the config but a colorscheme and one neo-tree option, there is
+  almost no surface for a plugin update to break. The pinning was protecting two
+  files.
 
-It refuses to start on a dirty lockfile so it can't eat pin edits you meant to
-keep (`--force` overrides), and it restores the lockfile from git on exit however
-it ends, so a failed run can't leave the repo dirty and block the next one.
+So: a new machine installs whatever is current. Both laptops track upstream
+instead of tracking each other, and there's no bootstrap step to forget.
 
-Verified from a clean XDG sandbox: 33 plugins installed at the committed pins,
-lockfile untouched, `catppuccin` active, no plugin load errors, idempotent on a
-second run. The only `:checkhealth lazy` complaints are the luarocks ones lazy
-itself tells you to ignore.
+Verified rather than assumed — a clean XDG sandbox with no lockfile installed
+LazyVim 16.0.0 (a major bump from the 15.14.0 that was pinned) on nvim 0.12.5:
+33 plugins, zero load errors, `catppuccin` active, treesitter parsers compiling,
+and `catppuccin.transparent_background` behaving identically to the pinned set.
 
-### Updating plugins
-
-Not required — the lockfile reproduces a known-good set, and the pins are the
-reason a six-month-old config still starts cleanly. When you do want to update,
-do it on one laptop and let the others follow:
-
-```sh
-nvim +Lazy                     # `U` to update, or :Lazy update
-# use it for a day, then:
-cd ~/mycode/dotfiles && git add config/nvim/lazy-lock.json && git commit
-```
-
-On the other laptop: `git pull && ./scripts/bootstrap-nvim.sh`.
-
-Never commit a lockfile you haven't run. The one caveat worth knowing: `brew`
-installs whatever nvim is current while the plugins stay pinned, so the gap
-between the two only grows. Pins from more than a few months back paired with a
-brand-new nvim is the one combination likely to break — if a fresh laptop
-misbehaves, updating plugins is the first thing to try.
+If an update ever does break something, `:Lazy` shows every plugin's history and
+`git log` in `~/.local/share/nvim/lazy/<plugin>` finds the last good commit; pin
+that one plugin with `commit = "..."` in a `lua/plugins/` file until upstream
+fixes it. That's a rare, targeted fix rather than a permanent maintenance tax.
 
 ## Changes from the pre-repo config
 

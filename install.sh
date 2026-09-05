@@ -17,10 +17,10 @@ DRY_RUN=0
 
 # src (relative to repo)            dest (relative to $HOME)
 #
-# Directories are linked whole where the app only reads from them, or where files
-# it writes are worth tracking (nvim's lazy-lock.json is a lockfile you want in
-# git). Where an app drops logs or state next to its config — herdr — individual
-# files are linked instead, so that noise stays out of the repo.
+# Directories are linked whole where the config is a tree the app owns (nvim,
+# hammerspoon); anything those apps write back into it is gitignored. Where an app
+# drops logs or state next to its config — herdr — individual files are linked
+# instead, so that noise stays out of the repo.
 LINKS=(
   "zsh/zshrc                        .zshrc"
   "git/gitconfig                    .gitconfig"
@@ -88,8 +88,7 @@ done
 echo
 echo "Done. Open a new shell (or run: exec zsh)."
 echo
-echo "Next, in order:"
+echo "Next:"
 echo "  brew bundle --file=$DOTFILES/Brewfile"
-# Not run automatically: it needs nvim on PATH, and doing it here would mean a
-# first `nvim` launch races the script and rewrites the pins. See the script.
-echo "  $DOTFILES/scripts/bootstrap-nvim.sh   # BEFORE opening nvim"
+echo "  nvim                # first launch installs plugins; give it a minute"
+echo "  xcode-select --install   # if treesitter parsers fail to compile"
