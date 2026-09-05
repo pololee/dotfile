@@ -27,7 +27,6 @@ LINKS=(
   "git/ignore                       .config/git/ignore"
   "hammerspoon                      .hammerspoon"
   "config/nvim                      .config/nvim"
-  "config/zellij                    .config/zellij"
   "config/starship.toml             .config/starship.toml"
   "config/ghostty/config            .config/ghostty/config"
   "config/herdr/config.toml         .config/herdr/config.toml"

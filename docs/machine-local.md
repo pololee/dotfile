@@ -47,6 +47,7 @@ Only the Stripe-specific *wrapper* is local.
 
 | Path | Why |
 | --- | --- |
+| `~/conductor/.venv/bin` on `PATH` | Internal tool. If you want it, add the guarded `path=(...)` line to `~/.zshrc.local` |
 | `~/.config/direnv/direnv.toml` | Header says "centrally-managed by Salt. DO NOT EDIT"; the whitelist is all `~/stripe/*` paths |
 | `~/.config/tmuxinator/*.yml` | `pay-server.yml` / `sjs-oss.yml` are work project layouts |
 | `~/.config/{pay-server,gocode,zoolander,mint,stripe}` | Work tooling state |

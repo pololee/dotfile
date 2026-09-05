@@ -33,8 +33,8 @@ zsh/
   zshrc                    → ~/.zshrc          load-order orchestration only
   conf.d/
     10-history.zsh                             overrides shellinit's tiny defaults
-    20-env.zsh                                 locale, EDITOR, PATH, model aliases
-    30-aliases.zsh                             navigation, eza/bat, git shorthands
+    20-env.zsh                                 locale, EDITOR, Homebrew prefix, PATH
+    30-aliases.zsh                             eza/bat, shell basics, git shorthands
     40-fzf.zsh                                 keybinds via `fzf --zsh` + colors
     50-tools.zsh                               starship, zoxide, try
     99-plugins-last.zsh                        zle plugins with hard ordering
@@ -44,7 +44,6 @@ git/
 hammerspoon/               → ~/.hammerspoon    hyper-key launcher + 5 modules
 config/
   nvim/                    → ~/.config/nvim    LazyVim
-  zellij/                  → ~/.config/zellij
   starship.toml            → ~/.config/starship.toml
   ghostty/config           → ~/.config/ghostty/config
   herdr/config.toml        → ~/.config/herdr/config.toml
@@ -58,10 +57,13 @@ install.sh                 idempotent symlinker with backups
 `zsh/zshrc` deliberately contains no settings — only the load order. Add
 settings to a numbered file in `conf.d/`, or a new one; the glob picks it up.
 
-Directory-level symlinks are used where the app only reads (`hammerspoon`,
-`zellij`) or where files it writes are worth tracking (`nvim`'s
-`lazy-lock.json`). File-level symlinks are used where an app drops logs beside
-its config (`herdr`).
+Directory-level symlinks are used where the app only reads (`hammerspoon`) or
+where files it writes are worth tracking (`nvim`'s `lazy-lock.json`). File-level
+symlinks are used where an app drops logs beside its config (`herdr`).
+
+herdr is the terminal multiplexer; zellij was dropped once herdr replaced it.
+`tmux` stays in the Brewfile because herdr's remote wrapper drives it, but there
+is no tracked `tmux.conf`.
 
 ## Hammerspoon
 
@@ -80,7 +82,7 @@ leaving trackpad gestures alone.
 
 ## Changes from the pre-repo config
 
-Behaviour is preserved except for four deliberate fixes:
+Fixes:
 
 - `~/.fzf_init.zsh` (22 KB vendored) → `source <(fzf --zsh)`, so it can't drift
   from the installed fzf. Falls back to `~/.fzf.zsh` on older versions.
@@ -91,6 +93,16 @@ Behaviour is preserved except for four deliberate fixes:
 - Added `init.defaultBranch = main`, `pull.ff = only`, `rebase.autoStash`,
   `diff.algorithm = histogram`; dropped `core.preloadindex` and
   `core.untrackedCache` duplicates.
+
+Dropped rather than carried over — all of these were in the old `~/.zshrc` and
+will disappear from the shell once `install.sh` runs:
+
+| Dropped | Why |
+| --- | --- |
+| `zellij` config + Brewfile entry | herdr replaced it |
+| `..` / `...` / `....` aliases | zoxide covers the same ground |
+| `ANTHROPIC_DEFAULT_OPUS_MODEL` / `..._SONNET_MODEL` | Claude Code's own settings are the right layer; env vars here fight `/model` |
+| `~/conductor/.venv/bin` on `PATH` | internal tool — belongs in `~/.zshrc.local` |
 
 ## Not covered here
 
