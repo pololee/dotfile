@@ -22,4 +22,5 @@ export PATH
 
 # Node version manager. nodenv, not fnm — two shim directories on PATH is how you
 # get a `node` that doesn't match the `.node-version` you're looking at.
-command -v nodenv >/dev/null && eval "$(nodenv init - zsh)"
+# Cached: `nodenv init` is 44 ms of subprocess per shell otherwise.
+command -v nodenv >/dev/null && _cached_eval nodenv nodenv init - zsh

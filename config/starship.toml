@@ -10,7 +10,18 @@ $directory\
 $git_branch\
 $git_status\
 [](fg:yellow bg:green)\
+$nodejs\
+$python\
+$golang\
+$rust\
+$java\
+$kotlin\
+$haskell\
+$php\
+$c\
 [](fg:green bg:sapphire)\
+$docker_context\
+$conda\
 [](fg:sapphire bg:lavender)\
 $time\
 [ ](fg:lavender)\

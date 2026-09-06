@@ -28,10 +28,6 @@ Raycast shortcuts, git identity — are in [docs/mac-setup.md](docs/mac-setup.md
 `<dest>.bak-<timestamp>` rather than deleting it. Re-run it after a `git pull`
 that adds a new config.
 
-Two manual steps macOS can't automate: grant Hammerspoon Accessibility
-permission (System Settings → Privacy & Security → Accessibility), and set
-Ghostty as the default terminal if you want it.
-
 ## Layout
 
 ```
@@ -39,11 +35,14 @@ zsh/
   zprofile                 → ~/.zprofile       Homebrew on PATH; runs before zshrc
   zshrc                    → ~/.zshrc          load-order orchestration only
   conf.d/
+    00-lib.zsh                                 _cached_eval, zsh-cache-clear
+    05-completion.zsh                          compinit (cached) + completion UX
     10-history.zsh                             overrides shellinit's tiny defaults
+    15-options.zsh                             pushd stack, globbing, AUTO_CD
     20-env.zsh                                 locale, EDITOR, typeset -U path
     25-toolchains.zsh                          pnpm, nodenv
     30-aliases.zsh                             eza/bat, shell basics, git shorthands
-    40-fzf.zsh                                 keybinds via `fzf --zsh` + colors
+    40-fzf.zsh                                 fd-backed, bat/eza previews
     50-tools.zsh                               starship, zoxide, try
     99-plugins-last.zsh                        zle plugins with hard ordering
 git/
@@ -85,6 +84,37 @@ writes into its own config dir is gitignored; see [Neovim](#neovim).
 herdr is the terminal multiplexer; zellij was dropped once herdr replaced it.
 `tmux` stays in the Brewfile because herdr's remote wrapper drives it, but there
 is no tracked `tmux.conf`.
+
+## Startup cost
+
+Measured with `zsh -l -i -c exit`, 15 runs, and profiled with `zmodload zsh/zprof`.
+
+| | before | after |
+| --- | --- | --- |
+| clean machine (no managed shellinit) | 329 ms, **and no completion at all** | **143 ms**, 1732 completions |
+| this work laptop | 663 ms | 577 ms |
+
+The clean-machine "before" is measured against commit `727b4a4`, not estimated. It
+had `compdef=0` and an empty `_comps` — tab completion for git, gh and brew simply
+did not exist, because nothing in the repo ran `compinit` and only the work
+laptop's managed shellinit was covering for it.
+
+Two things got it there:
+
+- **`_cached_eval`** in `00-lib.zsh` replaces `eval "$(tool init zsh)"` with a
+  cached file, regenerated only when the tool's binary is newer. That's 191 ms of
+  subprocess down to 72 ms of `source`. `try` alone was 131 ms — it's an rbenv
+  shim, so every shell paid ruby's startup.
+- **`compinit -C`** with a dated dump in `05-completion.zsh`: the full security
+  audit runs at most once a day, 7.6 ms on the fast path instead of ~231 ms.
+
+The work laptop stays slower because the managed shellinit in `~/.zshrc.pre.local`
+runs its own unconditional `compinit` (231 ms) plus 812 `compdef` calls before any
+of this repo loads. Not fixable from here — `05-completion.zsh` detects it and
+skips its own, so at least it isn't paid twice.
+
+After upgrading a tool whose version is hidden behind a shim, run
+`zsh-cache-clear`. Everything else invalidates on binary mtime.
 
 ## Hammerspoon
 
