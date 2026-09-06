@@ -1,0 +1,60 @@
+# Portable interactive Bash setup for remote SSH hosts.
+#
+# NOT symlinked by install.sh — remote boxes don't have this repo. Copy it up:
+#   scp remote/bashrc host:~/.bashrc
+#
+# Assumes nothing: no Homebrew, no macOS paths, no Nerd Font. Every tool is
+# probed and has a fallback, so this same file works on a bare Linux host.
+
+# Interactive shells only.
+case $- in
+  *i*) ;;
+  *) return ;;
+esac
+
+HISTCONTROL=ignoreboth:erasedups
+HISTSIZE=10000
+HISTFILESIZE=20000
+shopt -s histappend checkwinsize
+
+if command -v nvim >/dev/null 2>&1; then
+  export EDITOR=nvim
+  alias vim=nvim
+else
+  export EDITOR=vim
+fi
+export VISUAL="$EDITOR"
+export BAT_STYLE=plain
+export LESSCHARSET=utf-8
+
+if command -v eza >/dev/null 2>&1; then
+  alias ls='eza --color=auto --group-directories-first --classify=auto'
+  alias ll='eza --color=auto --group-directories-first -al --classify=auto'
+else
+  # No --icons here: a remote host usually lacks a Nerd Font.
+  case "$(uname -s 2>/dev/null)" in
+    Darwin) alias ls='ls -G'; alias ll='ls -alG' ;;
+    *)      alias ls='ls --color=auto'; alias ll='ls -al --color=auto' ;;
+  esac
+fi
+
+alias grep='grep --color=auto'
+alias gs='git status'
+alias gd='git diff'
+
+[ -f "$HOME/.fzf.bash" ] && . "$HOME/.fzf.bash"
+
+# zoxide, matching the local shell. `cd` is not aliased here on purpose: on a
+# remote box you often want plain cd, and `z` is unambiguous.
+if command -v zoxide >/dev/null 2>&1; then
+  eval "$(zoxide init bash)"
+fi
+
+if command -v starship >/dev/null 2>&1; then
+  eval "$(starship init bash)"
+else
+  PS1='\[\e[1;92m\][\u@\h: \W]\$\[\e[0m\] '
+fi
+
+# Machine-local additions, untracked.
+[ -f "$HOME/.bashrc.local" ] && . "$HOME/.bashrc.local"

@@ -1,0 +1,25 @@
+#!/usr/bin/env zsh
+# ~/.zprofile — symlinked from ~/mycode/dotfiles/zsh/zprofile
+#
+# Runs once per login shell, BEFORE ~/.zshrc. Its only job is putting Homebrew on
+# PATH, because almost everything zsh/conf.d/ reaches for lives there.
+#
+# This is not optional on a fresh Mac. Homebrew's installer does not add itself to
+# PATH — it prints these two lines and expects you to paste them into ~/.zprofile.
+# Without it, `starship`, `eza`, `fzf`, `zoxide` and `nvim` are all missing, and
+# because conf.d guards every integration with `command -v`, the shell comes up
+# looking fine while silently doing none of it.
+#
+# On a machine where something else already handles this (a work laptop with a
+# managed shellinit, or an /etc/paths.d entry) `brew shellenv` is idempotent, so
+# running it again is harmless.
+
+if [[ -x /opt/homebrew/bin/brew ]]; then          # Apple Silicon
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [[ -x /usr/local/bin/brew ]]; then           # Intel
+  eval "$(/usr/local/bin/brew shellenv)"
+fi
+
+# Login-shell-only machine-local additions (rare — most things belong in
+# ~/.zshrc.local). Kept for symmetry with the .zshrc hooks.
+[[ -r $HOME/.zprofile.local ]] && source $HOME/.zprofile.local

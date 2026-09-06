@@ -49,5 +49,21 @@ cask "ghostty"
 # macOS automation. Its config lives in hammerspoon/ — note it reads
 # ~/.hammerspoon, which install.sh symlinks.
 cask "hammerspoon"
-# Nerd Font referenced by config/ghostty/config (font-family = VictorMono).
+# Launcher and window manager. Config is NOT tracked (see docs/machine-local.md);
+# window-management shortcuts are set up by hand, see docs/mac-setup.md.
+cask "raycast"
+
+# Apps the Hammerspoon hyper-key bindings launch. Without these,
+# hammerspoon/modules/app_hotkeys.lua binds chords to apps that aren't installed,
+# and chrome_vertical_tabs.lua has nothing to drive.
+cask "google-chrome"      # hyper+o, plus the vertical-tabs module
+cask "slack"              # hyper+s
+cask "cursor"             # hyper+;
+cask "visual-studio-code" # hyper+'
+
+# --- Fonts ------------------------------------------------------------------
+# Referenced by config/ghostty/config (font-family = VictorMono Nerd Font).
 cask "font-victor-mono-nerd-font"
+# Not referenced by any config here, but installed on the machine and handy as a
+# second terminal font. Drop it if you never switch.
+cask "font-iosevka-nerd-font"

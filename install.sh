@@ -22,6 +22,7 @@ DRY_RUN=0
 # drops logs or state next to its config — herdr — individual files are linked
 # instead, so that noise stays out of the repo.
 LINKS=(
+  "zsh/zprofile                     .zprofile"
   "zsh/zshrc                        .zshrc"
   "git/gitconfig                    .gitconfig"
   "git/ignore                       .config/git/ignore"

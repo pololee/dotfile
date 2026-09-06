@@ -1,0 +1,118 @@
+#!/usr/bin/env bash
+# Validate everything in this repo without installing it. Run before committing,
+# and on a new machine before trusting install.sh.
+#
+#   ./scripts/check
+#
+# Checks nothing about your $HOME — it reads only the repo, so it's safe to run
+# anywhere. Exits non-zero on the first category that fails.
+
+set -euo pipefail
+
+REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$REPO"
+fail=0
+note() { printf '%-22s %s\n' "$1" "$2"; }
+bad()  { printf '%-22s %s\n' "$1" "FAIL: $2" >&2; fail=1; }
+
+# --- shell syntax -----------------------------------------------------------
+zsh_files=(zsh/zprofile zsh/zshrc zsh/conf.d/*.zsh)
+for f in "${zsh_files[@]}"; do
+  zsh -n "$f" 2>/dev/null || bad "zsh -n" "$f"
+done
+note "zsh -n" "${#zsh_files[@]} file(s)"
+
+for f in install.sh scripts/check remote/bashrc; do
+  bash -n "$f" || bad "bash -n" "$f"
+done
+note "bash -n" "install.sh, scripts/check, remote/bashrc"
+
+if command -v shellcheck >/dev/null; then
+  sc_ok=1
+  shellcheck install.sh scripts/check || sc_ok=0
+  # remote/bashrc is sourced, not executed; SC1090/SC1091 are its optional sources.
+  shellcheck --shell=bash --exclude=SC1090,SC1091 remote/bashrc || sc_ok=0
+  if (( sc_ok )); then note "shellcheck" "clean"; else bad "shellcheck" "see above"; fi
+else
+  note "shellcheck" "SKIP (not installed)"
+fi
+
+# --- config file parsing ----------------------------------------------------
+git config --file git/gitconfig --list >/dev/null || bad "gitconfig" "does not parse"
+note "gitconfig" "parses"
+
+if command -v jq >/dev/null; then
+  # lazy-lock.json is gitignored and may be absent; only check what's here.
+  mapfile -t jsons < <(find config -name '*.json' -type f)
+  ((${#jsons[@]})) && { jq empty "${jsons[@]}" || bad "jq" "invalid JSON"; }
+  note "json" "${#jsons[@]} file(s) valid"
+fi
+
+# --- lua --------------------------------------------------------------------
+lua_count=0
+while IFS= read -r f; do
+  lua_count=$((lua_count + 1))
+  if command -v luajit >/dev/null; then
+    luajit -bl "$f" >/dev/null 2>&1 || bad "lua parse" "$f"
+  elif command -v nvim >/dev/null; then
+    nvim --clean -i NONE --headless "+lua assert(loadfile([[$f]]))" +qa 2>/dev/null || bad "lua parse" "$f"
+  fi
+done < <(find hammerspoon config/nvim -name '*.lua' -type f)
+note "lua parse" "$lua_count file(s)"
+
+# stylua formatting, but ONLY where a stylua.toml declares a contract to check
+# against — currently config/nvim (spaces/2), which is also what stylua rewrites
+# on save there via conform. hammerspoon/ has no stylua.toml on purpose: those
+# files are hand-formatted with aligned label pairs that stylua would explode onto
+# one line per item, and nothing reformats them automatically, so there's no drift
+# to catch.
+stylua_bin="$(command -v stylua || true)"
+[[ -z $stylua_bin && -x $HOME/.local/share/nvim/mason/bin/stylua ]] && stylua_bin="$HOME/.local/share/nvim/mason/bin/stylua"
+if [[ -n $stylua_bin ]]; then
+  checked=0
+  while IFS= read -r toml; do
+    dir="$(dirname "$toml")"
+    "$stylua_bin" --check "$dir" || bad "stylua" "$dir not formatted"
+    checked=$((checked + 1))
+  done < <(find . -name 'stylua.toml' -not -path './.git/*' -type f)
+  note "stylua --check" "$checked dir(s) with a stylua.toml"
+else
+  note "stylua --check" "SKIP (not installed)"
+fi
+
+# --- secrets ----------------------------------------------------------------
+# The repo is meant to be shareable; anything credential-shaped is a bug, since
+# machine-local secrets belong in the untracked ~/*.local files.
+if rg -n -i --glob '!.git/**' --glob '!*.log' --glob '!scripts/check' \
+     '(access[_-]?token|api[_-]?key|client[_-]?secret|password|BEGIN [A-Z ]*PRIVATE KEY)[[:space:]]*[:=]' .; then
+  bad "secret scan" "credential-shaped string in tracked config"
+else
+  note "secret scan" "clean"
+fi
+
+# An email address in the tracked gitconfig means a work identity could leak onto
+# a personal laptop. It belongs in ~/.gitconfig.local.
+if rg -q '^\s*email\s*=' git/gitconfig; then
+  bad "gitconfig identity" "email is tracked; move it to ~/.gitconfig.local"
+else
+  note "gitconfig identity" "no tracked email"
+fi
+
+# --- hygiene ----------------------------------------------------------------
+git diff HEAD --check || bad "whitespace" "trailing whitespace / conflict markers"
+note "git diff --check" "clean"
+
+# Every symlink source in install.sh must exist.
+missing=0
+while read -r src _; do
+  [[ -z $src || $src == \#* ]] && continue
+  [[ -e $src ]] || { bad "install.sh links" "$src missing"; missing=1; }
+done < <(sed -n '/^LINKS=(/,/^)/p' install.sh | rg -o '"\s*(\S+)\s+(\S+)\s*"' -r '$1 $2')
+(( missing )) || note "install.sh links" "all sources exist"
+
+echo
+if (( fail )); then
+  echo "FAILED" >&2
+  exit 1
+fi
+echo "All checks passed."

@@ -10,14 +10,19 @@ macOS / zsh / Homebrew. Catppuccin Mocha throughout.
 ## Install on a new machine
 
 ```sh
+xcode-select --install    # and install Homebrew from https://brew.sh first
 git clone <this-repo> ~/mycode/dotfiles
 cd ~/mycode/dotfiles
+./scripts/check          # validate the repo before it touches $HOME
 brew bundle              # tools the configs depend on
 ./install.sh --dry-run   # review
 ./install.sh             # symlink into $HOME
 exec zsh
 nvim                     # first launch installs plugins; give it a minute
 ```
+
+Full bootstrap order and the manual macOS steps — Hammerspoon Accessibility,
+Raycast shortcuts, git identity — are in [docs/mac-setup.md](docs/mac-setup.md).
 
 `install.sh` is idempotent and moves anything it doesn't own to
 `<dest>.bak-<timestamp>` rather than deleting it. Re-run it after a `git pull`
@@ -31,10 +36,12 @@ Ghostty as the default terminal if you want it.
 
 ```
 zsh/
+  zprofile                 → ~/.zprofile       Homebrew on PATH; runs before zshrc
   zshrc                    → ~/.zshrc          load-order orchestration only
   conf.d/
     10-history.zsh                             overrides shellinit's tiny defaults
-    20-env.zsh                                 locale, EDITOR, Homebrew prefix, PATH
+    20-env.zsh                                 locale, EDITOR, typeset -U path
+    25-toolchains.zsh                          pnpm, nodenv
     30-aliases.zsh                             eza/bat, shell basics, git shorthands
     40-fzf.zsh                                 keybinds via `fzf --zsh` + colors
     50-tools.zsh                               starship, zoxide, try
@@ -49,11 +56,22 @@ config/
   ghostty/config           → ~/.config/ghostty/config
   herdr/config.toml        → ~/.config/herdr/config.toml
   lazygit/config.yml       → ~/.config/lazygit/config.yml
+remote/bashrc              copied by hand to remote hosts — NOT symlinked
+scripts/check              validate the repo without installing it
 templates/                 seeds for the untracked ~/*.local files
+docs/mac-setup.md          bootstrap order + the manual macOS steps
 docs/machine-local.md      what's excluded, and why
 Brewfile                   only what these configs actually need
 install.sh                 idempotent symlinker with backups
 ```
+
+`~/.zprofile` is load-bearing on a fresh Mac: Homebrew's installer doesn't put
+itself on PATH, and every integration in `conf.d/` is guarded with `command -v`,
+so without it the shell comes up looking fine while silently doing none of it.
+
+`20-env.zsh` sets `typeset -U path`, which is what makes every PATH prepend in the
+repo idempotent — including tools like `nodenv init` that re-prepend their shims
+each time they run.
 
 `zsh/zshrc` deliberately contains no settings — only the load order. Add
 settings to a numbered file in `conf.d/`, or a new one; the glob picks it up.
