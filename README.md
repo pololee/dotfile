@@ -11,7 +11,7 @@ macOS / zsh / Homebrew. Catppuccin Mocha throughout.
 
 ```sh
 xcode-select --install    # and install Homebrew from https://brew.sh first
-git clone <this-repo> ~/mycode/dotfiles
+git clone https://github.com/pololee/dotfiles.git ~/mycode/dotfiles
 cd ~/mycode/dotfiles
 ./scripts/check          # validate the repo before it touches $HOME
 brew bundle              # tools the configs depend on
