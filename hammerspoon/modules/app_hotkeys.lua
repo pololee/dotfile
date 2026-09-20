@@ -4,10 +4,8 @@ local hotkeys = {}
 
 local applications = {
 	{ key = "o", name = "Google Chrome" },
-	{ key = "s", name = "Slack" },
-	{ key = ";", name = "Cursor" },
-	{ key = "'", name = "Visual Studio Code" },
-	-- { key = "i", name = "iTerm" },
+	{ key = "s", name = "ChatGPT" },
+	{ key = ";", name = "Visual Studio Code" },
 	{ key = "i", name = "Ghostty" },
 }
 
