@@ -111,12 +111,6 @@
 [credential]
 	helper = osxkeychain
 
-[filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
-
 # Must stay last: later includes win, so ~/.gitconfig.local can override
 # anything above it.
 [include]
