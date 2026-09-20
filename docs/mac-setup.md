@@ -34,10 +34,10 @@ extension bundles, not portable preferences — see
 the shortcuts by hand. Never commit a Raycast token file or an unreviewed settings
 export.
 
-**Identity** — `~/.gitconfig.local` needs an `email`, and on a personal machine
-usually a different `[github] user` than a work one. `install.sh` seeds the file
-from `templates/gitconfig.local.example`; commits will use the wrong address until
-you edit it.
+**Identity** — `install.sh` prompts for your git `name` and `email` (defaulting
+to your existing identity) and writes them to `~/.gitconfig.local`; it never
+overwrites an existing file. On a personal machine you may also want a different
+`[github] user` than work — add it to `~/.gitconfig.local`.
 
 ## Remote hosts
 

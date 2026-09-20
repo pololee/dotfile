@@ -11,9 +11,12 @@ employer, host, or credential lives in untracked files in `$HOME`.
 | `~/.zshrc.local` | after `[0-8]*`, before `99-plugins-last.zsh` | Work aliases, internal env vars, functions that shell out to internal CLIs |
 | `~/.gitconfig.local` | last `[include]` in `~/.gitconfig` | Commit identity, signing key, `hooksPath`, `maintenance.repo` paths, enterprise credential usernames |
 
-`install.sh` seeds the two `.local` files from `templates/` if they don't exist,
-and never overwrites them. `*.local` is in `.gitignore` as a second line of
-defence.
+`install.sh` seeds the two `.local` files if they don't exist, and never
+overwrites them. `~/.zshrc.local` is a straight copy of its template.
+`~/.gitconfig.local` is copied from its template and then filled in with your git
+`name` and `email` — prompted for on a TTY, defaulting to the identity already in
+`~/.gitconfig`, and skipped entirely when run non-interactively. `*.local` is in
+`.gitignore` as a second line of defence.
 
 Order is the reason `.pre.local` exists: shellinit has to run first so the
 portable config can win, but plugins in `99-plugins-last.zsh` have to run after

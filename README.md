@@ -26,7 +26,8 @@ Raycast shortcuts, git identity — are in [docs/mac-setup.md](docs/mac-setup.md
 
 `install.sh` is idempotent and moves anything it doesn't own to
 `<dest>.bak-<timestamp>` rather than deleting it. Re-run it after a `git pull`
-that adds a new config.
+that adds a new config. It also prompts for your git `name`/`email` (writing the
+untracked `~/.gitconfig.local`), skipping the prompt when run non-interactively.
 
 ## Layout
 

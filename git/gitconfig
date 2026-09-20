@@ -8,10 +8,9 @@
 # which is included at the BOTTOM of this file so it wins on any key it sets.
 # See docs/machine-local.md.
 
-[user]
-	name = Polo Li
-	# email intentionally not set here — set it in ~/.gitconfig.local so a work
-	# laptop and a personal laptop can't cross-author commits.
+# Identity (user.name / user.email) is deliberately NOT set here. install.sh
+# prompts for it and writes ~/.gitconfig.local, which is included at the bottom
+# of this file — so a work laptop and a personal laptop can't cross-author commits.
 
 [core]
 	editor = nvim

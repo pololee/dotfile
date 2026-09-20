@@ -15,6 +15,11 @@ STAMP="$(date +%Y%m%d%H%M%S)"
 DRY_RUN=0
 [[ "${1:-}" == "--dry-run" ]] && DRY_RUN=1
 
+# Capture the current git identity (from the not-yet-replaced ~/.gitconfig) so the
+# seed prompt below can offer it as a default.
+PRE_NAME="$(git config --global --get user.name 2>/dev/null || true)"
+PRE_EMAIL="$(git config --global --get user.email 2>/dev/null || true)"
+
 # src (relative to repo)            dest (relative to $HOME)
 #
 # Directories are linked whole where the config is a tree the app owns (nvim,
@@ -75,14 +80,49 @@ done
 echo
 # Seed the machine-local escape hatches so a fresh machine has somewhere obvious
 # to put employer- or host-specific config. Never overwritten if present.
+seed_gitconfig_local() {
+  local example="$1" target="$2"
+
+  if (( DRY_RUN )); then
+    log "seed  .gitconfig.local (would prompt for git name/email)"
+    return 0
+  fi
+
+  local name="$PRE_NAME" email="$PRE_EMAIL" name_in email_in
+  [[ -z $name ]] && name="$(id -F 2>/dev/null || true)"
+
+  # Only prompt on a real TTY; piped/CI runs fall back to the existing identity.
+  if [[ -t 0 ]]; then
+    printf '\nGit identity — written to %s (never committed):\n' "$target"
+    read -r -p "  Full name [${name:-leave unset}]: " name_in || true
+    [[ -n $name_in ]] && name="$name_in"
+    read -r -p "  Email [${email:-<none>}]: " email_in || true
+    [[ -n $email_in ]] && email="$email_in"
+  fi
+
+  cp "$example" "$target"
+  [[ -n $name ]] && git config --file "$target" user.name "$name"
+  [[ -n $email ]] && git config --file "$target" user.email "$email"
+
+  if [[ -n $email ]]; then
+    log "seed  .gitconfig.local (git identity set)"
+  else
+    log "seed  .gitconfig.local (template only — edit it to set your email)"
+  fi
+}
+
 for pair in "zshrc.local.example:.zshrc.local" "gitconfig.local.example:.gitconfig.local"; do
   example="$DOTFILES/templates/${pair%%:*}"
   target="$HOME/${pair##*:}"
   if [[ -e "$target" ]]; then
     log "ok    ${pair##*:} (exists, left alone)"
   elif [[ -e "$example" ]]; then
-    log "seed  ${pair##*:} from templates/${pair%%:*}"
-    run cp "$example" "$target"
+    if [[ "${pair##*:}" == ".gitconfig.local" ]]; then
+      seed_gitconfig_local "$example" "$target"
+    else
+      log "seed  ${pair##*:} from templates/${pair%%:*}"
+      run cp "$example" "$target"
+    fi
   fi
 done
 
