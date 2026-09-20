@@ -40,7 +40,7 @@ zsh/
     10-history.zsh                             overrides shellinit's tiny defaults
     15-options.zsh                             pushd stack, globbing, AUTO_CD
     20-env.zsh                                 locale, EDITOR, typeset -U path
-    25-toolchains.zsh                          pnpm, nodenv
+    25-toolchains.zsh                          pnpm, fnm, rv, bun
     30-aliases.zsh                             eza/bat, shell basics, git shorthands
     40-fzf.zsh                                 fd-backed, bat/eza previews
     50-tools.zsh                               starship, zoxide, try

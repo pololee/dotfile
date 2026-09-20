@@ -33,6 +33,12 @@ brew "tree-sitter"
 brew "shellcheck"         # mason installs these too; having them on PATH is
 brew "shfmt"              # faster and works offline
 
+# --- language toolchains: zsh/conf.d/25-toolchains.zsh -----------------------
+brew "fnm"                # node (Fast Node Manager)
+brew "rv"                 # ruby; `try` is a gem inside rv's Ruby
+# bun is NOT here on purpose: it's installed via its own installer at ~/.bun
+# (not a Homebrew formula) — see 25-toolchains.zsh.
+
 # --- terminal multiplexing --------------------------------------------------
 brew "herdr"              # config/herdr — https://herdr.dev
 brew "tmux"
