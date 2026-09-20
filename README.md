@@ -63,6 +63,7 @@ docs/mac-setup.md          bootstrap order + the manual macOS steps
 docs/machine-local.md      what's excluded, and why
 Brewfile                   only what these configs actually need
 install.sh                 idempotent symlinker with backups
+revert.sh                  undo install.sh — unlink symlinks, restore backups
 ```
 
 `~/.zprofile` is load-bearing on a fresh Mac: Homebrew's installer doesn't put

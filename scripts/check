@@ -22,14 +22,14 @@ for f in "${zsh_files[@]}"; do
 done
 note "zsh -n" "${#zsh_files[@]} file(s)"
 
-for f in install.sh scripts/check remote/bashrc; do
+for f in install.sh revert.sh scripts/check remote/bashrc; do
   bash -n "$f" || bad "bash -n" "$f"
 done
-note "bash -n" "install.sh, scripts/check, remote/bashrc"
+note "bash -n" "install.sh, revert.sh, scripts/check, remote/bashrc"
 
 if command -v shellcheck >/dev/null; then
   sc_ok=1
-  shellcheck install.sh scripts/check || sc_ok=0
+  shellcheck install.sh revert.sh scripts/check || sc_ok=0
   # remote/bashrc is sourced, not executed; SC1090/SC1091 are its optional sources.
   shellcheck --shell=bash --exclude=SC1090,SC1091 remote/bashrc || sc_ok=0
   if (( sc_ok )); then note "shellcheck" "clean"; else bad "shellcheck" "see above"; fi
