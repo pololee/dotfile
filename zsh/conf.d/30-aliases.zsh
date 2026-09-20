@@ -44,6 +44,11 @@ alias sizeof="du -sh"
 alias myip="curl -s http://whatismyip.akamai.com/"
 alias ports="lsof -iTCP -sTCP:LISTEN -n -P"
 
+# Tools
+# npx re-resolves the `latest` tag on every run, so this always boots the newest
+# published dsh. @latest makes that intent explicit; --yes skips the install prompt.
+alias dsh="npx --yes @deepseek-ai/dsh@latest web"
+
 # This repo
 alias zshrc="$EDITOR ${DOTFILES:-$HOME/mycode/dotfiles}/zsh"
 alias reload="exec zsh"
